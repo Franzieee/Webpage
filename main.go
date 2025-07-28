@@ -13,8 +13,9 @@ func main() {
 	db.InitDB()
 
 	// Set up routes and assign handler functions
-	http.HandleFunc("/", routes.LoginHandler)
+	http.HandleFunc("/", routes.HomeHandler)
 	http.HandleFunc("/login", routes.LoginHandler)
+	http.HandleFunc("/register", routes.RegisterHandler)
 
 	log.Println("Server started on http://localhost:8080")
 	err := http.ListenAndServe(":8080", nil)
@@ -22,4 +23,3 @@ func main() {
 		log.Fatal("Server error", err)
 	}
 }
-

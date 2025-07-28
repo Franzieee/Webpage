@@ -32,18 +32,18 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Get the input values from the form
-		username := r.FormValue("username")
-		password := r.FormValue("password")
+		Username := r.FormValue("username")
+		Password := r.FormValue("password")
 
 		// Find user in the database by username
-		user, err := models.GetUserByUsername(username)
+		user, err := models.GetUserByUsername(Username)
 		if err != nil {
 			tmpl.Execute(w, map[string]string{"Error": "Invalid username or password"})
 			return
 		}
 
 		// Compare passwords whether hashed password from the database matches the plaintext entered by the user during login.
-		err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password))
+		err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(Password))
 
 		if err != nil {
 			// If the comparison is wrong (wrong passowrd), shows an error message
@@ -54,6 +54,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		//If there isn't any errors on the username and password, the user is logged in successfully
 
 		// Successful login displays a welcome message:
-		w.Write([]byte("Welcome," + user.FirstName + "!"))
+		w.Write([]byte("Welcome," + user.Username + "!"))
 	}
 }

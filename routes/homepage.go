@@ -18,7 +18,8 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		</head>
 		<body>
 			<h1>Welcome to My Personal Website</h1>
-			<p><a href="/login">Go to Login Page</a></p>
+			<p><a href="/login">Login </a></p>
+			<p><a href="/register">Register</a></p>
 		</body>
 		</html>
 	`)
