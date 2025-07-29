@@ -15,13 +15,13 @@ type User struct {
 	Username     string    `db:"username"`
 	PasswordHash string    `db:"password_hash"`
 	Role         string    `db:"role"`
-	TimeStamp    time.Time `db:"time_stamp"`
+	CreateAt    time.Time `db:"created_at"`
 }
 
 // Login form that gets the username before login
 func GetUserByUsername(username string) (*User, error) {
 	query := `
-		SELECT id, first_name, last_name, username, password_hash, role, time_stamp
+		SELECT id, first_name, last_name, username, password_hash, role, created_at
 		FROM users
 		WHERE username = $1
 	`
@@ -36,7 +36,7 @@ func GetUserByUsername(username string) (*User, error) {
 		&u.Username,
 		&u.PasswordHash,
 		&u.Role,
-		&u.TimeStamp,
+		&u.CreateAt,
 	)
 
 	if err != nil {
@@ -48,7 +48,7 @@ func GetUserByUsername(username string) (*User, error) {
 
 // Register area
 // Registers a new user information in the database
-func CreateUser(FirstName, LastName, Username, Password string) error {
+func CreateUser(FirstName, LastName, Username, Password, Role string) error {
 	// Hashing the password to keep it safe
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -57,12 +57,12 @@ func CreateUser(FirstName, LastName, Username, Password string) error {
 
 	// For Query
 	query := `
-		INSERT INTO users (first_name, last_name, username, password_hash)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO users (first_name, last_name, username, password_hash, role)
+		VALUES ($1, $2, $3, $4, $5)
 	`
 
 	// Execution of query
-	_, err = db.DB.Exec(query, FirstName, LastName, Username, string(hashedPassword))
+	_, err = db.DB.Exec(query, FirstName, LastName, Username, string(hashedPassword), Role)
 	if err != nil {
 		return err
 	}

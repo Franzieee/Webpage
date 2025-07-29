@@ -5,18 +5,14 @@ import (
 	"log"          // For logging errors or status messages
 	"os"
 
-	"github.com/joho/godotenv" // Loads variables from .env
-	_ "github.com/lib/pq"      // PostgreSQL driver (blank import means init() is called)
+	_ "github.com/lib/pq" // PostgreSQL driver (blank import means init() is called)
 )
 
 var DB *sql.DB // Global variable to hold the DB connection
 
-func InitDB()  {
-	// Load environment variables from .env 
-	err := godotenv.Load()
-	if err != nil {
-		log.Println(".env file not found or not loaded - relying on actual environment variables")
-	}
+func InitDB() {
+
+	var err error
 
 	// Get connection string from environment variable
 	connStr := os.Getenv("DATABASE_URL")
